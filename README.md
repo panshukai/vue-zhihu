@@ -1,4 +1,4 @@
-# my-vue1
+# my-vue2 zhihuDaily
 
 > a vue2版知乎日报
 > 所有API均来自网络（若涉及侵权，请及时联系我删除）
