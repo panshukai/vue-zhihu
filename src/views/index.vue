@@ -10,7 +10,7 @@
   </swipe>
   <h4 class="textLeft">{{msg}}</h4>
   <ul>
-    <router-link v-for="item in movieList" :to="{name:'indexInfo',params:{id:item.id}}" tag='li'>
+    <router-link v-for="item in movieList" :to="{name:'indexInfo',params:{detailId:item.id}}" tag='li'>
       <a class="listDiv">
         <div class="leftInfo">
           <p>{{item.title}}</p>        
@@ -23,32 +23,37 @@
       </a>
     </router-link>
   </ul>
-</div>/:id
+</div>
+
 </template>
 
 <script>
   import { Swipe, SwipeItem } from 'vue-swipe';
   import 'vue-swipe/dist/vue-swipe.css';
+  import { Indicator } from 'mint-ui';
 export default {
   data () {
     return {
       movieList:[],
       topList:[],
       msg: '今日热闻',
-      zhihuApi:'/jiekou/news/latest'
+      zhihuApi:'/jiekou/news/latest',
     }
   },
-  created(){
+  mounted(){
     this.getList();
   },
   methods:{
       getInfo(id){
-        this.$router.push({name:'indexInfo',params:{id:id}});
+        this.$router.push({name:'indexInfo',params:{detailId:id}});
       },
       getList(){
-        this.$http.get(this.zhihuApi).then(function(response){
-          this.topList=response.body.top_stories;
-          this.movieList=response.body.stories;
+        // Indicator.open();
+        let _this=this;
+        this.$http.get(_this.zhihuApi).then(function(response){
+          // Indicator.close();
+          _this.topList=response.body.top_stories;
+          _this.movieList=response.body.stories;
           console.log(response.body.stories);
           // console.log(this.$route.params);
         },
@@ -59,13 +64,21 @@ export default {
   },
   components:{
     Swipe,
-    SwipeItem
+    SwipeItem,
+    Indicator
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+    .mint-loadmore-top span {
+      display: inline-block;
+      transition: .2s linear;
+    }
+    .rotate {
+      transform: rotate(180deg);
+    }
 .my-swipe {
   height: 200px;
   color: #fff;

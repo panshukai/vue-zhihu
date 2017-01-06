@@ -1,63 +1,38 @@
 <template>
   <div id="app">
-    <z-head></z-head>
+    <common-header></common-header>
+    <cover></cover>
     <sidebar></sidebar>
 
 <!--     <img src="./assets/logo.png"> -->
 <!--     <hello></hello> -->
     <div class="main">
-        <transition :name="transitionName">
-            <router-view class="view"></router-view>
-        </transition>
+        <router-view class="view"></router-view>
     </div>
 
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello.vue'
-import ZHead from './components/head.vue'
+import CommonHeader from './components/Commonheader.vue'
 import Sidebar from './components/sidebar.vue'
-
-
-
+import cover from './components/cover.vue'
 export default {
-  name: 'app',
-  components: {
-    Hello,
-    ZHead,
-    Sidebar
-  },
-  data(){
-    return {
-        transitionName:'slide-left'
+    name: 'app',
+    components: {
+        CommonHeader,
+        cover,
+        Sidebar
     }
-  },
-  watch: {
-    '$route' (to, from) {
-        var routes=this.$router.options.routes;
-        var toPathIndex=null;
-        var fromPathIndex=null;
-        for(var i=0;i<routes.length;i++){
-            if(routes[i].path==to.path){
-                toPathIndex=i;
-            }
-            if(routes[i].path==from.path){
-                fromPathIndex=i;
-            }            
-        }
-        this.transitionName = toPathIndex < fromPathIndex ? 'slide-right' : 'slide-left';
-    }
-  },
 }
 </script>
 
 <style>
-@import 'http://at.alicdn.com/t/font_r5maj9qd5c73c8fr.css';
+@import 'http://at.alicdn.com/t/font_tc1lw3vul8035wmi.css';
 .iconfont{color: #fff;}
 /*样式重置*/
 body,ul,ol,h1,h2,h3,h4,h5,h6,form,input,p,header,section,footer{padding: 0;margin: 0;font-weight: normal;}
-html{font-size: 625%;height: 100%;}
+html{font-size: 625%;}
 body {font-family: "\5FAE\8F6F\96C5\9ED1";font-size: 0.16rem;background-size: 100% 100%;position: relative;}
 a {
     text-decoration: none;

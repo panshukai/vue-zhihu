@@ -1,29 +1,15 @@
 <template>
-  <div class="sidebar" :class="{'hide':isHideBar}" @click="hidebar()">
-    <div class="cover"></div>
-    <transition name="fade">
-      <div class="sidebarMain">
-        <div class="textCenter portrait">
-          <img src="../assets/portrait.jpg" height="60%" width="60%" alt="头像">
-        </div>
-        <h1 class="textCenter">{{name}}</h1>
-        <h4 class="textCenter">{{slogan}}</h4>
-        <ul>
-          <router-link class="textCenter" :to="{ path: '/index'}" tag="li">
-            <a>热点</a>
-          </router-link>  
-          <router-link class="textCenter" :to="{ path: '/exp'}" tag="li">
-            <a>过往</a>
-          </router-link>      
-          <router-link class="textCenter" :to="{ path: '/share'}" tag="li">
-            <a>日报</a>
-          </router-link>
-          <router-link class="textCenter" :to="{ path: '/topic'}" tag="li">
-            <a>话题</a>
-          </router-link>
-        </ul>
-      </div>
-    </transition>
+  <div class="sidebar" :class="{'showSideBar':!isHideBar}" @click="hidebar()" :style="{backgroundColor:backgroundColor}">
+    <div class="portrait">
+      <img src="../assets/portrait.jpg" height="20%" width="20%" alt="头像">我的学名叫帕斯卡
+    </div>
+    <router-link :to="{ name:'index'}" tag="h4"><i class="iconfont icon-7"></i>首页</router-link>
+    <ul>
+      <router-link class="themeLi" v-for="item in items" :to="{ name:'theme',params:{id:item.id}}" tag="li">
+        <a>{{item.name}}</a>
+        <span class="textCenter">+</span>
+      </router-link>  
+    </ul>
   </div>
 </template>
 
@@ -34,54 +20,46 @@ export default {
   data () {
     return {
       name: 'PSK',
-      slogan:'1111',
-      kinds:[{
-        name:'全部',
-        link:'index'
-      },{
-        name:'精华',
-        link:'exp'
-      },{
-        name:'分享',
-        link:'share'
-      },{
-        name:'话题',
-        link:'topic'
-      }],
-      currentPath:''
+      themeApi:'/jiekou/themes',
+      items:[],
     }
   },
   computed: {
-    ...mapGetters(['isHideBar'])
+    ...mapGetters(['isHideBar','backgroundColor'])
   },
   methods:{
     hidebar(){
       this.$store.commit('hideBar',!this.isHideBar);
+    },
+    getThemes(){
+      let _this=this;
+      this.$http.get(this.themeApi).then(function(response){
+        _this.items=response.body.others;
+      })
     }
+  },
+  mounted(){
+    this.getThemes();
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.sidebar{width: 100%;position: fixed;left: 0;top: 0;height: 100%;z-index: 5;}
-.cover{position: absolute;left: 0;top: 0;width: 100%;height: 100%;background-color: #999;opacity: 0.8;}
-.sidebarMain{width: 20%;position: absolute;left:0;top:0;background-color: #00A2EA;height: 100%;}
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s ease;
-}
-.fade-enter, .fade-leave-active {
-  opacity: 0
-}
-
-.portrait{padding-top: 8px;}
+.sidebar{width: 250px;position: fixed;left: -250px;top: 0;z-index: 5;transition: all 0.3s ease;}
+.sidebar.showSideBar{left:0px;}
+.portrait{padding: 10px;vertical-align: center;color: #fff;font-size: 18px;}
 img{border-radius: 50%;}
 h1{color: #fff;line-height: 0.5rem;font-size: 20px;}
-h4{padding-top: 10px;color: #fff;}
-ul{padding: 10px 0;}
+.iconfont{color: #00A2EA;font-size: 16px;}
+h4{padding: 10px;color: #00A2EA;background-color: #fff;font-size: 16px;}
+h4.router-link-active{background-color: #ddd;}
+.sidebar ul{padding-left: 0;height: auto;}
 li{line-height: 26px;}
-a{color: #fff;}
-li.router-link-active{background-color: #fff;}
-li.router-link-active a {color: #00A2EA;}
+
+.themeLi{padding: 10px;color: #000;display: flex;background-color: #fff;}
+.themeLi a{flex: 6;color: #000;}
+.themeLi span{flex: 1;color: #999;font-size: 18px;}
+li.router-link-active{background-color: #ddd;}
 
 </style>

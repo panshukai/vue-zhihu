@@ -1,0 +1,94 @@
+<template>
+<div id="newsList">
+  <div class="wrap">
+    <img width="100%" :src="background" alt="">
+    <p>{{description}}</p>
+  </div>
+  <div class="editor clearfix">
+    <h5 @click="load">主编</h5>
+    <ul>
+      <li v-for="item in editors">
+        <img :src="item.avatar" :title="item.bio" :alt="item.name">
+      </li>
+    </ul>
+  </div>
+  <ul class="contentList">
+    <router-link v-for="item in contentList" :to="{name:'detail',params:{detailId:item.id}}" tag='li'>
+      <a class="listDiv">
+        <div class="leftInfo">
+          <p>{{item.title}}</p>        
+        </div>
+        <div class="img" v-if="item.images">
+            <img :src="item.images[0]" alt="">
+            <span class="cover" v-show="item.multipic"></span>
+            <p v-show="item.multipic">多图</p>
+        </div>
+      </a>
+    </router-link>
+  </ul>
+</div>
+</template>
+
+<script>
+import { Indicator } from 'mint-ui';
+export default {
+  data () {
+    return {
+      body:null,
+      background:null,
+      description:null,
+      editors:null,
+      contentList:[],
+      themeApi:'/jiekou/theme/',
+
+    }
+  },
+  watch:{
+    '$route' (to,from) {
+      this.getList(); 
+    }
+  },
+  mounted(){
+    this.getList();
+  },
+  methods:{
+      load(){
+        Indicator.open();
+      },
+      getList(){
+        this.$http.get(this.themeApi+this.$route.params.id).then(function(response){
+          console.log(response.body);
+          this.body=response.body;
+          this.background=response.body.background;
+          this.description=response.body.description;
+          this.editors=response.body.editors;
+          this.contentList=response.body.stories;
+        },
+        function(response){
+          console.log(response);
+        })
+      }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.wrap{position: relative;width: 100%;height: 200px;overflow-y: hidden;}
+.wrap p{position: absolute;bottom: 0;left: 0;padding: 0 0.2rem;  color: #fff;font-size: 18px;font-weight: bold;text-align: center;}
+.editor{padding-top: 0.1rem;}
+.editor h5{font-size: 18px;float: left;padding:0 0.1rem;line-height: 0.3rem;}
+.editor ul{display: flex; flex-wrap: nowrap;}
+.editor ul li{width: 0.3rem;height: 0.3rem;float: left;;padding: 0 0.05rem;}
+.editor ul li img{width: 100%;border-radius: 50%;display: block; }
+.contentList{width: 100%;}
+.contentList li{border: 1px solid #ccc;margin: 5px;box-shadow: 0px 2px 2px #ddd;border-radius: 4px;padding: 5px;}
+.listDiv{display: flex;flex-direction: row;}
+.leftInfo{flex: 4;text-align: left;color: #000;padding-right: 0.1rem;}
+.leftInfo p{padding-bottom: 0.05rem;padding-top: 0.1rem;}
+.leftInfo button{border: 1px solid #ccc;background-color: #fff;color: #999;padding: 2px;border-radius: 2px;}
+.img{flex: 1;text-align: left;position: relative;}
+.img img{display: block;width: 100%;}
+.img .cover{position: absolute;left: 0;bottom: 0;width: 100%;background-color: #000;opacity: .4;height: 16px;}
+.img p{position: absolute;right: 4px;bottom: 1px;color: #fff;font-size: 12px;text-align: right;width: auto;line-height: 14px;}
+</style>

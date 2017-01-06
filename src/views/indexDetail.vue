@@ -1,11 +1,11 @@
 <template>
-<div id="expDetail" v-show="isInfo">
+<div id="indexDetail" v-show="isInfo">
 	<link rel="stylesheet" :href="cssLink" />
 	<header class="hotHeader" :style="{opacity:opacity}">
 		<div class="header-icon goBack"><router-link class="iconfont" tag='i' :to="'/index'">&#xe678;</router-link></div>
 		<div class="header-icon"><i class="iconfont">&#xe654;</i></div>		
 		<div class="header-icon"><i class="iconfont">&#xe610;</i></div>
-		<div class="header-icon"><i class="iconfont">&#xe66d;</i>&nbsp;{{comments}}</div>
+		<div class="header-icon" @click="goComment()"><i class="iconfont">&#xe66d;</i>&nbsp;{{comments}}</div>
 		<div class="header-icon"><i class="iconfont">&#xe649;</i>&nbsp;{{popularity}}</div>
 	</header>
 	<div class="detail" v-html='detailHtml'></div>
@@ -58,7 +58,7 @@
 	    },
 		methods:{
 			getContext(){
-				this.$http.get(this.zhihuApi+this.$route.params.id).then(function(response){
+				this.$http.get(this.zhihuApi+this.$route.params.detailId).then(function(response){
 					var headImg=response.body.image;
 					var headImgSource=response.body.image_source;					
 					var html=response.body.body;
@@ -74,11 +74,14 @@
 			},
 			getExtra(){
 				/*this.$http.get(this.commentApi+this.$route.params.id).then(function(response){*/
-				this.$http.get(this.commentApi+this.$route.params.id).then(function(response){
+				this.$http.get(this.commentApi+this.$route.params.detailId).then(function(response){
 					console.log(response);
 					this.popularity=response.body.popularity;
 					this.comments=response.body.comments;
 				})
+			},
+			goComment(){
+				this.$router.push({name:'indexInfoCom',params:{id:this.$route.params.detailId}});
 			}
 		}
 	}

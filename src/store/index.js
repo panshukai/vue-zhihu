@@ -4,11 +4,14 @@ Vue.use(Vuex);
 const store=new Vuex.Store({
 	state:{
 		isHideBar:true,
-		isInfo:false
+		isInfo:false,
+		backgroundColor:'#00A2EA',
 	},
 	getters:{
 		isHideBar:state=>state.isHideBar,
-		isInfo:state=>state.isInfo
+		isInfo:state=>state.isInfo,
+		backgroundColor:state=>state.backgroundColor,
+		title:state=>state.title,
 	},
 	mutations:{
 		hideBar:(state,flag)=>{
@@ -16,6 +19,9 @@ const store=new Vuex.Store({
 		},
 		isInfoPage:(state,flag)=>{
 			state.isInfo=flag;
+		},
+		changeColor:(state,color)=>{
+			state.backgroundColor=color;
 		}
 	}
 });
