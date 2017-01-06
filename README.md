@@ -1,7 +1,7 @@
 # my-vue1
 
-> a vue blog demo
-
+> a vue2版知乎日报
+> 所有API均来自网络（若涉及侵权，请及时联系我删除）
 ## Build Setup
 
 ``` bash
