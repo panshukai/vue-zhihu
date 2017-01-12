@@ -1,7 +1,7 @@
 <template>
 <div id="indexDetail" v-show="isInfo">
 	<link rel="stylesheet" :href="cssLink" />
-	<header class="hotHeader" :style="{opacity:opacity}">
+	<header class="hotHeader" :style="{opacity:opacity,backgroundColor:backgroundColor}">
 		<div class="header-icon goBack"><router-link class="iconfont" tag='i' :to="'/index'">&#xe678;</router-link></div>
 		<div class="header-icon"><i class="iconfont">&#xe654;</i></div>		
 		<div class="header-icon"><i class="iconfont">&#xe610;</i></div>
@@ -13,6 +13,7 @@
 </template>
 <script>
 	import { mapGetters } from 'vuex'
+	import { Indicator } from 'mint-ui';
 	export default {
 		data(){
 			return {
@@ -27,7 +28,7 @@
 			}
 		},
 		computed: {
-			...mapGetters(['isInfo'])
+			...mapGetters(['isInfo','backgroundColor'])
 		},
 	    beforeRouteEnter (to, from, next) {
 	      next(vm => {
@@ -43,16 +44,25 @@
 	      this.$store.commit('isInfoPage', false);
 	      next();
 	    },
-	    created(){
+	    mounted(){
+	    	console.log(1);
+	    	Indicator.close();
 	    	this.getContext();
 	    	this.getExtra();
-	    },
-	    mounted(){
 	    	window.onscroll=()=>{
 	    		if(window.pageYOffset<=200){
 	    			this.opacity=1-window.pageYOffset/200;	    			
 	    		}else{
 		    		this.opacity=0;
+	    		}
+	    	}
+	    },
+        watch:{
+	    	'$route' (to,from) {
+	    		if(to.name=='indexInfo'){
+			    	Indicator.close();
+	    			this.getContext();
+	    			this.getExtra();
 	    		}
 	    	}
 	    },
@@ -70,6 +80,7 @@
 					this.detailHtml=newStr;
 					this.cssLink=response.body.css;
 					// console.log(response);
+					Indicator.close();
 				})
 			},
 			getExtra(){
@@ -87,7 +98,7 @@
 	}
 </script>
 <style>
-.hotHeader{position: fixed;top: 0;left: 0;z-index: 4;height: 0.5rem;width: 100%;background: #00A2EA;display: flex;flex-direction: row;}
+.hotHeader{position: fixed;top: 0;left: 0;z-index: 4;height: 0.5rem;width: 100%;display: flex;flex-direction: row;}
 .header-icon{flex:2;text-align: center;cursor: pointer;color: #fff;}
 .header-icon.goBack{flex: 4;text-align: left;padding-left: 0.1rem;}
 .header-icon i{font-size: 0.2rem;line-height: 0.5rem;}

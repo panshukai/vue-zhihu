@@ -3,11 +3,8 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 /*组件*/
 import index from '../views/index.vue'
-import exp from '../components/mains/exp.vue'
 import indexDetail from '../views/indexDetail.vue'
 import indexComment from '../views/comment.vue'
-import share from '../components/mains/share.vue'
-import topic from '../components/mains/topic.vue'
 import themeList from '../views/themeList.vue'
 import themeDetail from '../views/themeDetail.vue'
 const router = new VueRouter({

@@ -1,9 +1,9 @@
 <template>
-  <header class="header" v-if="!isInfo">
+  <header class="header" v-if="!isInfo" :style="{backgroundColor:backgroundColor}">
     <div class="header-icon"><i class="iconfont" @click="hidebar()">&#xe628;</i></div>
     <div class="header-cont"><h2>{{title}}</h2></div>
     <div class="header-icon" v-show='isIndex'><i class="iconfont">&#xe622;</i></div>
-    <div class="header-icon" v-show='isIndex'><i class="iconfont">&#xe7b3;</i></div>
+    <div class="header-icon" v-show='isIndex'><i class="iconfont" @click="changeColor()">&#xe7b3;</i></div>
   </header>
 </template>
 
@@ -14,11 +14,13 @@ export default {
     return {
       title:'首页',
       opacity:1,
-      isIndex:false
+      isIndex:false,
+      dayCol:'#00A2EA',
+      nightCol:'#464749',
     }
   },
   computed: {
-    ...mapGetters(['isHideBar','isInfo'])
+    ...mapGetters(['isHideBar','isInfo','backgroundColor'])
   },
   mounted(){
     this.changeTitle(this.$route.params.id);
@@ -30,7 +32,14 @@ export default {
   },
   methods:{
     hidebar(){
-      this.$store.commit('hideBar',!this.isHideBar);
+        this.$store.commit('hideBar',!this.isHideBar);
+    },
+    changeColor(){
+        if(this.backgroundColor=='#00A2EA'){
+            this.$store.commit('changeColor',this.nightCol);            
+        }else{
+            this.$store.commit('changeColor',this.dayCol);
+        }
     },
     changeTitle(options){
       if(options==13){
@@ -128,7 +137,7 @@ export default {
     z-index: 4;
     height: 0.5rem;
     width: 100%;
-    background: #00A2EA;
+/*    background: #00A2EA;*/
     display: flex;
     flex-direction: row;
   }

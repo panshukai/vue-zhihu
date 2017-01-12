@@ -1,6 +1,6 @@
 <template>
 <div id="comment" v-show="isInfo">
-	<header class="commentHeader">
+	<header class="commentHeader" :style="{backgroundColor:backgroundColor}">
 		<div class="header-icon goBack" @click="goBack"><i class="iconfont">&#xe678;</i></div>
 		<div class="comment">{{comments}}条点评</div>		
 		<div class="header-icon"><i class="iconfont">&#xe623;</i></div>
@@ -62,7 +62,7 @@
 			}
 		},
 		computed: {
-			...mapGetters(['isInfo'])
+			...mapGetters(['isInfo','backgroundColor'])
 		},
 	    beforeRouteEnter (to, from, next) {
 	      next(vm => {
@@ -75,6 +75,14 @@
 	    },
 	    mounted(){
 	    	this.getComments();
+	    },
+        watch:{
+	    	'$route' (to,from) {
+	    		if(to.name=='indexInfoCom'){
+	    			this.getComments();
+	    		}
+	    		this.hideShortComment();
+	    	}
 	    },
 		methods:{
 			changeDate(time){
@@ -118,7 +126,7 @@
 	}
 </script>
 <style scoped>
-.commentHeader{position: fixed;top: 0;left: 0;z-index: 4;height: 0.5rem;width: 100%;background: #00A2EA;display: flex;flex-direction: row;}
+.commentHeader{position: fixed;top: 0;left: 0;z-index: 4;height: 0.5rem;width: 100%;display: flex;flex-direction: row;}
 .comment{flex: 4;text-align: left;color: #fff;font-size: 0.2rem;line-height: 0.5rem;}
 .header-icon{flex:1;text-align: center;cursor: pointer;color: #fff;}
 .header-icon.goBack{flex: 1;text-align: left;padding-left: 0.1rem;}

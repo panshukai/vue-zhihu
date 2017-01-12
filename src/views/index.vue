@@ -1,84 +1,160 @@
 <template>
 <div id="index">
-  <swipe class="my-swipe">
-    <swipe-item v-for='item in topList' class='topStories' :speed="200" :auto="5000" :show-indicators="true" :prevent="true">
+  <mt-swipe class="my-swipe">
+    <mt-swipe-item v-for='item in topList' class='topStories' :speed="200" :auto="5000" :show-indicators="true" :prevent="true">
       <div class="wrap" @click="getInfo(item.id)">
         <img width="100%" :src="item.image" alt="">
         <p>{{item.title}}</p>
       </div>
-    </swipe-item>
-  </swipe>
-  <h4 class="textLeft">{{msg}}</h4>
-  <ul>
-    <router-link v-for="item in movieList" :to="{name:'indexInfo',params:{detailId:item.id}}" tag='li'>
-      <a class="listDiv">
-        <div class="leftInfo">
-          <p>{{item.title}}</p>        
-        </div>
-        <div class="img">
-            <img :src="item.images[0]" alt="">
-            <span class="cover" v-show="item.multipic"></span>
-            <p v-show="item.multipic">多图</p>
-        </div>
-      </a>
-    </router-link>
-  </ul>
+    </mt-swipe-item>
+  </mt-swipe>
+  <mt-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" ref="loadmore">
+    <dl v-for="one in body">
+      <dt class="textLeft">{{one.date==changeDate(new Date())?msg:showDate(one.date)}}</dt>
+      <dd>
+        <ul>
+          <router-link v-for="item in one.stories" :to="{name:'indexInfo',params:{detailId:item.id}}" tag='li'>
+          <!-- <li v-for="item in one.stories"> -->
+            <a class="listDiv">
+              <div class="leftInfo">
+                <p>{{item.title}}</p>        
+              </div>
+              <div class="img">
+                  <img :src="item.images[0]" alt="">
+                  <span class="cover" v-show="item.multipic"></span>
+                  <p v-show="item.multipic">多图</p>
+              </div>
+            </a>
+          <!-- </li> -->
+          </router-link>
+        </ul>
+      </dd>
+    </dl>
+
+    <div slot="bottom" class="mint-loadmore-bottom">
+      <span v-show="bottomStatus !== 'loading'" :class="{ 'rotate': bottomStatus === 'drop' }">↑</span>
+      <span v-show="bottomStatus === 'loading'">
+        <mt-spinner type="snake"></mt-spinner>
+      </span>
+    </div>
+  </mt-loadmore>
 </div>
 
 </template>
 
 <script>
-  import { Swipe, SwipeItem } from 'vue-swipe';
-  import 'vue-swipe/dist/vue-swipe.css';
-  import { Indicator } from 'mint-ui';
+  // import { Swipe, SwipeItem } from 'mint-ui';
+import { Indicator } from 'mint-ui';
+import { InfiniteScroll } from 'mint-ui';
+// import { Swipe, SwipeItem } from 'mint-ui';
 export default {
   data () {
     return {
-      movieList:[],
+      body:[],
       topList:[],
       msg: '今日热闻',
       zhihuApi:'/jiekou/news/latest',
+      before:'/jiekou/news/before/',
+      allLoaded: false,
+      bottomStatus: '',
+      date:''
     }
   },
+  // created(){
+  //   this.getList();
+  // },
   mounted(){
     this.getList();
   },
   methods:{
+      changeDate(time){
+        var dateStr='';
+        var year=time.getFullYear();
+        var month=time.getMonth()+1>9?time.getMonth()+1:'0'+(time.getMonth()+1);
+        var date=time.getDate()>9?time.getDate():'0'+time.getDate();
+        dateStr=year+''+month+''+date;
+        return dateStr;
+      },
+      showDate(time){
+        var dateStr='';
+        var year=time.substring(0,4);
+        var month=time.substring(4,6);
+        var date=time.substring(6,8);
+        var day=new Date(year,month-1,date).getDay();
+        switch(day){
+          case 0:day='日';
+          break;
+          case 1:day='一';
+          break;
+          case 2:day='二';
+          break;
+          case 3:day='三';
+          break;
+          case 4:day='四';
+          break;
+          case 5:day='五';
+          break;
+          case 6:day='六';
+          break;
+        }
+        dateStr=year+'年'+month+'月'+date+'日 星期'+day;
+        return dateStr;
+      },
+      handleBottomChange(status) {
+        this.bottomStatus = status;
+      },
+      loadBottom() {
+        setTimeout(() => {
+          // let lastValue = this.newsList[this.newsList.length - 1];
+          if (30 < 40) {
+            let _this=this;
+            this.$http.get(_this.before+_this.date).then(function(response){
+              _this.body.push(response.body);
+              _this.date--;
+            });
+          } else {
+            this.allLoaded = true;
+          }
+          this.$refs.loadmore.onBottomLoaded();
+        }, 1500);
+      },
       getInfo(id){
         this.$router.push({name:'indexInfo',params:{detailId:id}});
       },
       getList(){
-        // Indicator.open();
         let _this=this;
         this.$http.get(_this.zhihuApi).then(function(response){
-          // Indicator.close();
+          console.log(response)
+          _this.body.push(response.body);
+          console.log(_this.body);
           _this.topList=response.body.top_stories;
-          _this.movieList=response.body.stories;
-          console.log(response.body.stories);
+          // _this.newsList=response.body.stories;
+          _this.date=Number(response.body.date);
           // console.log(this.$route.params);
         },
         function(response){
           console.log(response);
         })
-      }
+      },
   },
   components:{
-    Swipe,
-    SwipeItem,
-    Indicator
+    // Swipe,
+    // SwipeItem,
+    Indicator,
+    InfiniteScroll
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .mint-loadmore-top span {
-      display: inline-block;
-      transition: .2s linear;
-    }
-    .rotate {
-      transform: rotate(180deg);
-    }
+.mint-loadmore-bottom span {
+  display: inline-block;
+  transition: .2s linear;
+}
+.rotate {
+  transform: rotate(180deg);
+}
 .my-swipe {
   height: 200px;
   color: #fff;
@@ -90,12 +166,12 @@ export default {
 .mint-swipe-indicator.is-active{background-color: #fff;}
 .wrap{position: relative;width: 100%;height: 100%;}
 .wrap p{position: absolute;top: 70%;left: 0;padding: 0 0.2rem;}
-  h4{padding: 5px 0 0 15px;font-size: 0.18rem;line-height: 0.28rem;font-weight: bold;color: #888;}
+  dt{padding: 8px 0 8px 15px;font-size: 0.18rem;line-height: 0.28rem;font-weight: bold;color: #888;}
   ul{width: 100%;}
-  li{border: 1px solid #ccc;margin: 5px;box-shadow: 0px 2px 2px #ddd;border-radius: 4px;padding: 5px;}
+  li{border: 1px solid #ccc;margin: 0 5px 5px;box-shadow: 0px 2px 2px #ddd;border-radius: 4px;padding: 5px;}
   .listDiv{display: flex;flex-direction: row;}
   .leftInfo{flex: 4;text-align: left;color: #000;padding-right: 0.1rem;}
-  .leftInfo p{padding-bottom: 0.05rem;padding-top: 0.1rem;}
+  .leftInfo p{padding: 0.1rem 0;}
   .leftInfo button{border: 1px solid #ccc;background-color: #fff;color: #999;padding: 2px;border-radius: 2px;}
   .img{flex: 1;text-align: left;position: relative;}
   .img img{display: block;width: 100%;}

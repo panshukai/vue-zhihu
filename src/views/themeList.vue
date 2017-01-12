@@ -5,7 +5,7 @@
     <p>{{description}}</p>
   </div>
   <div class="editor clearfix">
-    <h5 @click="load">主编</h5>
+    <h5>主编</h5>
     <ul>
       <li v-for="item in editors">
         <img :src="item.avatar" :title="item.bio" :alt="item.name">
@@ -49,20 +49,18 @@ export default {
     }
   },
   mounted(){
+    Indicator.open();
     this.getList();
   },
   methods:{
-      load(){
-        Indicator.open();
-      },
       getList(){
         this.$http.get(this.themeApi+this.$route.params.id).then(function(response){
-          console.log(response.body);
           this.body=response.body;
           this.background=response.body.background;
           this.description=response.body.description;
           this.editors=response.body.editors;
           this.contentList=response.body.stories;
+          Indicator.close();
         },
         function(response){
           console.log(response);

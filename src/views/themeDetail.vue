@@ -1,7 +1,7 @@
 <template>
 <div id="indexDetail" v-show="isInfo">
 	<link rel="stylesheet" :href="cssLink" />
-	<header class="hotHeader" :style="{opacity:opacity}">
+	<header class="hotHeader" :style="{opacity:opacity,backgroundColor:backgroundColor}">
 		<div class="header-icon goBack"><i class="iconfont" @click='returnTheme'>&#xe678;</i></div>
 		<div class="header-icon"><i class="iconfont">&#xe654;</i></div>		
 		<div class="header-icon"><i class="iconfont">&#xe610;</i></div>
@@ -21,6 +21,7 @@
 </template>
 <script>
 	import { mapGetters } from 'vuex'
+	import { Indicator } from 'mint-ui';
 	export default {
 		data(){
 			return {
@@ -36,7 +37,7 @@
 			}
 		},
 		computed: {
-			...mapGetters(['isInfo'])
+			...mapGetters(['isInfo','backgroundColor'])
 		},
 	    beforeRouteEnter (to, from, next) {
 	      next(vm => {
@@ -52,25 +53,10 @@
 	      this.$store.commit('isInfoPage', false);
 	      next();
 	    },
-	    // beforeRouteEnter (to, from, next) {
-	    //   next(vm => {
-	    //     vm.$store.commit('isInfoPage', true);
-    	// 	if(window.pageYOffset<=200){
-    	// 		vm.opacity=1-window.pageYOffset/200;	    			
-    	// 	}else{
-	    // 		vm.opacity=0;
-    	// 	}
-	    //   })
-	    // },
-	    // beforeRouteLeave(to, from, next){
-	    //   this.$store.commit('isInfoPage', false);
-	    //   next();
-	    // },
-	    created(){
+	    mounted(){
+	    	Indicator.open();
 	    	this.getContext();
 	    	this.getExtra();
-	    },
-	    mounted(){
 	    	window.onscroll=()=>{
 	    		if(window.pageYOffset<=200){
 	    			this.opacity=1-window.pageYOffset/200;	    			
@@ -85,13 +71,11 @@
 					this.detailHtml=response.body.body;
 					this.cssLink=response.body.css;
 					this.recommenders=response.body.recommenders;
-					console.log(response);
+					Indicator.close();
 				})
 			},
 			getExtra(){
-				/*this.$http.get(this.commentApi+this.$route.params.id).then(function(response){*/
 				this.$http.get(this.commentApi+this.$route.params.detailId).then(function(response){
-					console.log(response);
 					this.popularity=response.body.popularity;
 					this.comments=response.body.comments;
 				})
