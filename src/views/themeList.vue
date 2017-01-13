@@ -1,14 +1,14 @@
 <template>
 <div id="newsList">
   <div class="wrap">
-    <img width="100%" :src="background" alt="">
+    <img width="100%" :src="replaceUrl(background)" alt="">
     <p>{{description}}</p>
   </div>
   <div class="editor clearfix">
     <h5>主编</h5>
     <ul>
       <li v-for="item in editors">
-        <img :src="item.avatar" :title="item.bio" :alt="item.name">
+        <img :src="replaceUrl(item.avatar)" :title="item.bio" :alt="item.name">
       </li>
     </ul>
   </div>
@@ -19,7 +19,7 @@
           <p>{{item.title}}</p>        
         </div>
         <div class="img" v-if="item.images">
-            <img :src="item.images[0]" alt="">
+            <img :src="replaceUrl(item.images[0])" alt="">
             <span class="cover" v-show="item.multipic"></span>
             <p v-show="item.multipic">多图</p>
         </div>
@@ -40,7 +40,6 @@ export default {
       editors:null,
       contentList:[],
       themeApi:'/jiekou/theme/',
-
     }
   },
   watch:{
@@ -53,6 +52,11 @@ export default {
     this.getList();
   },
   methods:{
+      replaceUrl(src){
+        if(src){//如果不判断，默认src为null
+          return src.replace(/http\w{0,1}:\/\/p/g, 'https://images.weserv.nl/?url=p');
+        }
+      },
       getList(){
         this.$http.get(this.themeApi+this.$route.params.id).then(function(response){
           this.body=response.body;

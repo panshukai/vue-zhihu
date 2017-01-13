@@ -3,7 +3,7 @@
   <mt-swipe class="my-swipe">
     <mt-swipe-item v-for='item in topList' class='topStories' :speed="200" :auto="5000" :show-indicators="true" :prevent="true">
       <div class="wrap" @click="getInfo(item.id)">
-        <img width="100%" :src="item.image" alt="">
+        <img width="100%" :src="replaceUrl(item.image)" alt="">
         <p>{{item.title}}</p>
       </div>
     </mt-swipe-item>
@@ -20,7 +20,7 @@
                 <p>{{item.title}}</p>        
               </div>
               <div class="img">
-                  <img :src="item.images[0]" alt="">
+                  <img :src="replaceUrl(item.images[0])" alt="">
                   <span class="cover" v-show="item.multipic"></span>
                   <p v-show="item.multipic">多图</p>
               </div>
@@ -45,8 +45,7 @@
 <script>
   // import { Swipe, SwipeItem } from 'mint-ui';
 import { Indicator } from 'mint-ui';
-import { InfiniteScroll } from 'mint-ui';
-// import { Swipe, SwipeItem } from 'mint-ui';
+// import { InfiniteScroll } from 'mint-ui';
 export default {
   data () {
     return {
@@ -67,6 +66,11 @@ export default {
     this.getList();
   },
   methods:{
+      replaceUrl(src){
+        if(src){//如果不判断，默认src为null
+          return src.replace(/http\w{0,1}:\/\/p/g, 'https://images.weserv.nl/?url=p');
+        }
+      },
       changeDate(time){
         var dateStr='';
         var year=time.getFullYear();
@@ -105,8 +109,7 @@ export default {
       },
       loadBottom() {
         setTimeout(() => {
-          // let lastValue = this.newsList[this.newsList.length - 1];
-          if (30 < 40) {
+          if (true) {
             let _this=this;
             this.$http.get(_this.before+_this.date).then(function(response){
               _this.body.push(response.body);
@@ -135,13 +138,7 @@ export default {
         function(response){
           console.log(response);
         })
-      },
-  },
-  components:{
-    // Swipe,
-    // SwipeItem,
-    Indicator,
-    InfiniteScroll
+      }
   }
 }
 </script>

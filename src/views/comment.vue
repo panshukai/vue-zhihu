@@ -11,7 +11,7 @@
 			<li v-for="item in longComments">
 				<div class="singleLongComment">
 					<div class="img">
-						<img class="img-responsive" :src="item.avatar" alt="">
+						<img class="img-responsive" :src="replaceUrl(item.avatar)" alt="">
 					</div>
 					<h3>{{item.author}}</h3>
 					<div class="header-icon likes"><i class="iconfont">&#xe649;</i>{{item.likes}}</div>
@@ -31,7 +31,7 @@
 			<li v-for="item in shortComments" v-show="shortShow">
 				<div class="singleLongComment">
 					<div class="img">
-						<img class="img-responsive" :src="item.avatar" alt="">
+						<img class="img-responsive" :src="replaceUrl(item.avatar)" alt="">
 					</div>
 					<h3>{{item.author}}</h3>
 					<div class="header-icon likes"><i class="iconfont">&#xe649;</i>{{item.likes}}</div>
@@ -85,6 +85,11 @@
 	    	}
 	    },
 		methods:{
+	        replaceUrl(src){
+		        if(src){//如果不判断，默认src为null
+		          return src.replace(/http\w{0,1}:\/\/p/g, 'https://images.weserv.nl/?url=p');
+		        }
+		    },
 			changeDate(time){
 				var dateStr='';
 				var month=time.getMonth()+1>9?time.getMonth()+1:'0'+(time.getMonth()+1);

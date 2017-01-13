@@ -12,7 +12,7 @@
     <h5>推荐者</h5>
     <ul>
       <li v-for="item in recommenders">
-        <img :src="item.avatar">
+        <img :src="replaceUrl(item.avatar)">
       </li>
     </ul>
   </div>
@@ -66,6 +66,11 @@
 	    	}
 	    },
 		methods:{
+			replaceUrl(src){
+		        if(src){//如果不判断，默认src为null
+		          return src.replace(/http\w{0,1}:\/\/p/g, 'https://images.weserv.nl/?url=p');
+		        }
+		    },
 			getContext(){
 				this.$http.get(this.zhihuApi+this.$route.params.detailId).then(function(response){
 					this.detailHtml=response.body.body;

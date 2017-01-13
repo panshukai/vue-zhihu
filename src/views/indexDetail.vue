@@ -45,7 +45,6 @@
 	      next();
 	    },
 	    mounted(){
-	    	console.log(1);
 	    	Indicator.close();
 	    	this.getContext();
 	    	this.getExtra();
@@ -69,7 +68,7 @@
 		methods:{
 			getContext(){
 				this.$http.get(this.zhihuApi+this.$route.params.detailId).then(function(response){
-					var headImg=response.body.image;
+					var headImg=response.body.image.replace(/http\w{0,1}:\/\/p/g, 'https://images.weserv.nl/?url=p');
 					var headImgSource=response.body.image_source;					
 					var html=response.body.body;
 					var aa=html.split('"img-place-holder">');
