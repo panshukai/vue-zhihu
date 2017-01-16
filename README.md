@@ -15,6 +15,10 @@
 * 下拉加载
 * 日夜模式切换
 
+###解决问题
+* 解决知乎api接口只能用get模式（使用代理，具体详见config/index.js）
+* 知乎图片防盗链问题（使用https://images.weserv.nl 图片代理和缓存）
+
 ## Build Setup
 
 ``` bash
