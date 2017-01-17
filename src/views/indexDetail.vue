@@ -33,11 +33,11 @@
 	    beforeRouteEnter (to, from, next) {
 	      next(vm => {
 	        vm.$store.commit('isInfoPage', true);
-    		if(window.pageYOffset<=200){
-    			vm.opacity=1-window.pageYOffset/200;	    			
-    		}else{
-	    		vm.opacity=0;
-    		}
+    		// if(window.pageYOffset<=200){
+    		// 	vm.opacity=1-window.pageYOffset/200;	    			
+    		// }else{
+	    	// 	vm.opacity=0;
+    		// }
 	      })
 	    },
 	    beforeRouteLeave(to, from, next){
@@ -45,21 +45,29 @@
 	      next();
 	    },
 	    mounted(){
-	    	Indicator.close();
+	    	Indicator.open();
 	    	this.getContext();
 	    	this.getExtra();
+	    	var pageTop=0;
 	    	window.onscroll=()=>{
 	    		if(window.pageYOffset<=200){
 	    			this.opacity=1-window.pageYOffset/200;	    			
 	    		}else{
-		    		this.opacity=0;
+	    			if(window.pageYOffset>pageTop){
+	    				this.opacity=0;
+	    				pageTop=window.pageYOffset;
+	    			}else{
+	    				this.opacity=1;
+	    				pageTop=window.pageYOffset;
+	    			}
+		    		
 	    		}
 	    	}
 	    },
         watch:{
 	    	'$route' (to,from) {
 	    		if(to.name=='indexInfo'){
-			    	Indicator.close();
+			    	Indicator.open();
 	    			this.getContext();
 	    			this.getExtra();
 	    		}

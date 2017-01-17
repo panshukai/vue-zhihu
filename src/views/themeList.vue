@@ -44,7 +44,10 @@ export default {
   },
   watch:{
     '$route' (to,from) {
-      this.getList(); 
+      console.log(to);
+      if(to.name=='theme'){
+        this.getList(); 
+      }
     }
   },
   mounted(){

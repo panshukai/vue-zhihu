@@ -6,12 +6,14 @@ const store=new Vuex.Store({
 		isHideBar:true,
 		isInfo:false,
 		backgroundColor:'#00A2EA',
+		headDate:'首页',
 	},
 	getters:{
 		isHideBar:state=>state.isHideBar,
 		isInfo:state=>state.isInfo,
 		backgroundColor:state=>state.backgroundColor,
 		title:state=>state.title,
+		headDate:state=>state.headDate,
 	},
 	mutations:{
 		hideBar:(state,flag)=>{
@@ -22,6 +24,9 @@ const store=new Vuex.Store({
 		},
 		changeColor:(state,color)=>{
 			state.backgroundColor=color;
+		},
+		changeHeadDate:(state,date)=>{
+			state.headDate=date
 		}
 	}
 });

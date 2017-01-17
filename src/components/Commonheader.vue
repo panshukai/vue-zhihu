@@ -1,7 +1,7 @@
 <template>
   <header class="header" v-if="!isInfo" :style="{backgroundColor:backgroundColor}">
     <div class="header-icon"><i class="iconfont" @click="hidebar()">&#xe628;</i></div>
-    <div class="header-cont"><h2>{{title}}</h2></div>
+    <div class="header-cont"><h2>{{headDate}}</h2></div>
     <div class="header-icon" v-show='isIndex'><i class="iconfont">&#xe622;</i></div>
     <div class="header-icon" v-show='isIndex'><i class="iconfont" @click="changeColor()">&#xe7b3;</i></div>
   </header>
@@ -12,7 +12,6 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      title:'首页',
       opacity:1,
       isIndex:false,
       dayCol:'#00A2EA',
@@ -20,7 +19,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isHideBar','isInfo','backgroundColor'])
+    ...mapGetters(['isHideBar','isInfo','backgroundColor','headDate'])
   },
   mounted(){
     this.changeTitle(this.$route.params.id);
@@ -43,43 +42,56 @@ export default {
     },
     changeTitle(options){
       if(options==13){
-        this.title='日常心理学';
+
+        this.$store.commit('changeHeadDate','日常心理学');
         this.isIndex=false;
       }else if(options==12){
-        this.title='用户推荐日报';
+
+        this.$store.commit('changeHeadDate','用户推荐日报');
         this.isIndex=false;
       }else if(options==3){
-        this.title='电影日报';
+
+        this.$store.commit('changeHeadDate','电影日报');
         this.isIndex=false;
       }else if(options==11){
-        this.title='不许无聊';
+
+        this.$store.commit('changeHeadDate','不许无聊');
         this.isIndex=false;
       }else if(options==4){
-        this.title='设计日报';
+
+        this.$store.commit('changeHeadDate','设计日报');
         this.isIndex=false;
       }else if(options==5){
-        this.title='大公司日报';
+
+        this.$store.commit('changeHeadDate','大公司日报');
         this.isIndex=false;
       }else if(options==6){
-        this.title='财经日报';
+
+        this.$store.commit('changeHeadDate','财经日报');
         this.isIndex=false;
       }else if(options==10){
-        this.title='互联网安全';
+
+        this.$store.commit('changeHeadDate','互联网安全');
         this.isIndex=false;
       }else if(options==2){
-        this.title='开始游戏';
+
+        this.$store.commit('changeHeadDate','开始游戏');
         this.isIndex=false;
       }else if(options==7){
-        this.title='音乐日报';
+
+        this.$store.commit('changeHeadDate','音乐日报');
         this.isIndex=false;
       }else if(options==9){
-        this.title='动漫日报';
+
+        this.$store.commit('changeHeadDate','动漫日报');
         this.isIndex=false;
       }else if(options==8){
-        this.title='体育日报';
+
+        this.$store.commit('changeHeadDate','体育日报');
         this.isIndex=false;
       }else{
-        this.title='首页';
+
+        this.$store.commit('changeHeadDate','首页');
         this.isIndex=true;
       }
       // switch (options) {
@@ -158,7 +170,7 @@ export default {
     text-align: left;
     line-height: 0.5rem;
     color: #ffffff;
-    font-size:22px;
+    font-size:16px;
   }
 
 </style>

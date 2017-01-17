@@ -1,5 +1,6 @@
 <template>
 <div id="index">
+<mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange" ref="loadmore">
   <mt-swipe class="my-swipe">
     <mt-swipe-item v-for='item in topList' class='topStories' :speed="200" :auto="5000" :show-indicators="true" :prevent="true">
       <div class="wrap" @click="getInfo(item.id)">
@@ -30,7 +31,6 @@
         </ul>
       </dd>
     </dl>
-
     <div slot="bottom" class="mint-loadmore-bottom">
       <span v-show="bottomStatus !== 'loading'" :class="{ 'rotate': bottomStatus === 'drop' }">↑</span>
       <span v-show="bottomStatus === 'loading'">
@@ -38,6 +38,13 @@
       </span>
     </div>
   </mt-loadmore>
+  <div slot="top" class="mint-loadmore-top">
+    <span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }">↓</span>
+    <span v-show="topStatus === 'loading'">
+      <mt-spinner type="snake"></mt-spinner>
+    </span>
+  </div>
+</mt-loadmore>
 </div>
 
 </template>
@@ -55,8 +62,14 @@ export default {
       zhihuApi:'/jiekou/news/latest',
       before:'/jiekou/news/before/',
       allLoaded: false,
+      topStatus: '',
       bottomStatus: '',
-      date:''
+      date:'',
+      liNum:0,
+      liNumArr:[],
+      titleNum:0,
+      titleNumArr:[],
+      headDateArr:[]
     }
   },
   // created(){
@@ -64,8 +77,24 @@ export default {
   // },
   mounted(){
     this.getList();
+    window.addEventListener('scroll',this.scrollPage);
   },
   methods:{
+      scrollPage(){
+        var topDistance=window.pageYOffset;
+        // console.log(window.pageYOffset);
+        // console.log(this.titleNum);
+        // console.log(topDistance);
+        for(var i=0;i<this.liNumArr.length;i++){
+          if(topDistance<=200+this.titleNumArr[0]*44+this.liNumArr[0]*75){
+            this.$store.commit('changeHeadDate', '首页');
+          }else if(topDistance>=200+this.titleNumArr[i]*44+this.liNumArr[i]*75){
+            // console.log(this.showDate(this.headDateArr[i]));
+            // console.log(this.titleNumArr);
+            this.$store.commit('changeHeadDate', this.showDate(this.headDateArr[i+1]));
+          }
+        }
+      },
       replaceUrl(src){
         if(src){//如果不判断，默认src为null
           return src.replace(/http\w{0,1}:\/\/p/g, 'https://images.weserv.nl/?url=p');
@@ -104,6 +133,15 @@ export default {
         dateStr=year+'年'+month+'月'+date+'日 星期'+day;
         return dateStr;
       },
+      handleTopChange(status) {
+        this.topStatus = status;
+      },
+      loadTop() {
+        setTimeout(() => {
+          this.getList();
+          this.$refs.loadmore.onTopLoaded();
+        }, 1500);
+      },
       handleBottomChange(status) {
         this.bottomStatus = status;
       },
@@ -114,6 +152,12 @@ export default {
             this.$http.get(_this.before+_this.date).then(function(response){
               _this.body.push(response.body);
               _this.date--;
+              _this.liNum+=response.body.stories.length;
+              _this.liNumArr.push(_this.liNum);
+              _this.titleNum+=1;
+              _this.titleNumArr.push(_this.titleNum);
+              // console.log(_this.liNum);
+              _this.headDateArr.push(response.body.date);//存入每次的date数值
             });
           } else {
             this.allLoaded = true;
@@ -130,10 +174,15 @@ export default {
           console.log(response)
           _this.body.push(response.body);
           console.log(_this.body);
-          _this.topList=response.body.top_stories;
+          _this.topList=response.body.top_stories;//轮播图json
           // _this.newsList=response.body.stories;
           _this.date=Number(response.body.date);
+          _this.headDateArr.push(response.body.date);//存入当前日期
           // console.log(this.$route.params);
+          _this.liNum+=response.body.stories.length;
+          _this.liNumArr.push(_this.liNum);//加载一次，存入当前所有的列表内容总和
+          _this.titleNum+=1;
+          _this.titleNumArr.push(_this.titleNum);
         },
         function(response){
           console.log(response);
@@ -143,9 +192,9 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.mint-loadmore-bottom span {
+
+.mint-loadmore-top span,.mint-loadmore-bottom span {
   display: inline-block;
   transition: .2s linear;
 }
