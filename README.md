@@ -12,8 +12,9 @@
 * [mint-ui](https://github.com/ElemeFE/mint-ui)
 
 ###实现功能
-* 下拉加载
+* 首页下拉刷新，上拉加载
 * 日夜模式切换
+* 首页头部title切换
 
 ###解决问题
 * 解决知乎api接口只能用get模式（使用代理，具体详见config/index.js）
