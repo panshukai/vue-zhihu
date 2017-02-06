@@ -72,6 +72,15 @@
 	    		}
 	    	}
 	    },
+        watch:{
+	    	'$route' (to,from) {
+	    		if(to.name=='detail'){
+			    	Indicator.open();
+	    			this.getContext();
+	    			this.getExtra();
+	    		}
+	    	}
+	    },
 		methods:{
 			replaceUrl(src){
 		        if(src){//如果不判断，默认src为null

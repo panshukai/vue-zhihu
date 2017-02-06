@@ -69,9 +69,6 @@ export default {
       headDateArr:[]
   }
 },
-  // created(){
-  //   this.getList();
-  // },
   mounted(){
     this.getList();
     window.addEventListener('scroll',this.scrollPage);
@@ -82,12 +79,14 @@ methods:{
         // console.log(window.pageYOffset);
         // console.log(this.titleNum);
         // console.log(topDistance);
-        for(var i=0;i<this.liNumArr.length;i++){
+        // console.log(this.body);
+        for(var i=0;i<this.liNumArr.length-1;i++){
             if(topDistance<=200+this.titleNumArr[0]*44+this.liNumArr[0]*75){
                 this.$store.commit('changeHeadDate', '首页');
             }else if(topDistance>=200+this.titleNumArr[i]*44+this.liNumArr[i]*75){
                 // console.log(this.showDate(this.headDateArr[i]));
                 // console.log(this.titleNumArr);
+                console.log()
                 this.$store.commit('changeHeadDate', this.showDate(this.headDateArr[i+1]));
             }
         }
@@ -105,11 +104,11 @@ methods:{
         dateStr=year+''+month+''+date;
         return dateStr;
     },
-    showDate(time){
+    showDate(time){//
         var dateStr='';
-        var year=time.substring(0,4);
-        var month=time.substring(4,6);
-        var date=time.substring(6,8);
+        var year=Number(time.substring(0,4));
+        var month=Number(time.substring(4,6));
+        var date=Number(time.substring(6,8));
         var day=new Date(year,month-1,date).getDay();
         switch(day){
             case 0:day='日';
@@ -134,29 +133,38 @@ methods:{
         console.log(status);
         this.topStatus = status;
     },
-    loadTop() {
+    loadTop() {//下拉刷新
         setTimeout(() => {
-          this.body=[];
-          this.getList();
-          this.$refs.loadmore.onTopLoaded();
+            this.body=[];
+            this.getList();
+            this.$refs.loadmore.onTopLoaded();
         }, 1500);
     },
     handleBottomChange(status) {
         console.log(status);
         this.bottomStatus = status;
     },
-    loadBottom() {
+    loadBottom() {//上拉加载
         setTimeout(() => {
-            let _this=this;
-            this.$http.get(_this.before+_this.date).then(function(response){
-                _this.body.push(response.body);
-                _this.date--;
-                _this.liNum+=response.body.stories.length;
-                _this.liNumArr.push(_this.liNum);
-                _this.titleNum+=1;
-                _this.titleNumArr.push(_this.titleNum);
+            this.$http.get(this.before+this.date).then(function(response){
+                this.body.push(response.body);
+                // console.log(String(this.date));
+                var year=Number(String(this.date).substring(0,4));
+                var month=Number(String(this.date).substring(4,6));
+                var date=Number(String(this.date).substring(6,8));
+                var times=new Date(year,month-1,date).getTime();
+                // var lastTimeYear=new Date(times - 24*60*60*1000).getFullYear();
+                // var lastTimeMonth=new Date(times - 24*60*60*1000).getMonth();
+                // var lastTimeDate=new Date(times - 24*60*60*1000).getDate();
+                this.date=this.changeDate(new Date(times - 24*60*60*1000));
+                this.liNum+=response.body.stories.length;
+                this.liNumArr.push(this.liNum);
+                this.titleNum+=1;
+                this.titleNumArr.push(this.titleNum);
               // console.log(_this.liNum);
-                _this.headDateArr.push(response.body.date);//存入每次的date数值
+                this.headDateArr.push(response.body.date);//存入每次的date数值
+                console.log(this.liNumArr);
+                console.log(this.headDateArr);
             });
             this.$refs.loadmore.onBottomLoaded();
         }, 1500);
@@ -167,18 +175,19 @@ methods:{
     getList(){
         let _this=this;
         this.$http.get(_this.zhihuApi).then(function(response){
-            console.log(response)
             _this.body.push(response.body);
-            console.log(_this.body);
-              _this.topList=response.body.top_stories;//轮播图json
-              // _this.newsList=response.body.stories;
-              _this.date=Number(response.body.date);
-              _this.headDateArr.push(response.body.date);//存入当前日期
-              // console.log(this.$route.params);
-              _this.liNum+=response.body.stories.length;
-              _this.liNumArr.push(_this.liNum);//加载一次，存入当前所有的列表内容总和
-              _this.titleNum+=1;
-              _this.titleNumArr.push(_this.titleNum);
+            _this.topList=response.body.top_stories;//轮播图json
+            // _this.newsList=response.body.stories;
+            _this.date=Number(response.body.date);
+            // console.log(_this.headDateArr);
+            if(_this.liNumArr[0]!=response.body.stories.length){//解决下拉刷新后滚动页面标题日期与页面内容日期不对应（原因：下拉刷新和mount都执行此函数）
+                _this.headDateArr.push(response.body.date);//存入当前日期
+                _this.liNum+=response.body.stories.length;//新闻列表单个新闻和
+                _this.liNumArr.push(_this.liNum);//加载一次，存入当前所有的列表内容总和
+                _this.titleNum+=1;
+                _this.titleNumArr.push(_this.titleNum);
+            }
+
           },
           function(response){
               console.log(response);
