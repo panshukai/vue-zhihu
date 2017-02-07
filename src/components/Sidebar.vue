@@ -6,10 +6,10 @@
     <router-link :to="{ name:'index'}" tag="h4" :style="{color:backgroundColor}"><i class="iconfont icon-7" :style="{color:backgroundColor}"></i>首页</router-link>
     <!-- <ul :style="{height:navHeight(items.length*46)+'px'}"> -->
     <ul>
-      <router-link class="themeLi" v-for="item in items" :to="{ name:'theme',params:{id:item.id}}" tag="li">
+      <li class="themeLi" v-for="(item,index) in items" @click='toThemeDtl(index)'>
         <a>{{item.name}}</a>
         <span class="textCenter">+</span>
-      </router-link>  
+      </li>  
     </ul>
   </div>
 </template>
@@ -31,13 +31,20 @@ export default {
   },
   methods:{
     hidebar(){
-      this.$store.commit('hideBar',!this.isHideBar);
+      this.$store.commit('hideBar',true);
+      document.body.style.overflow='';
+      document.querySelector('html').style.overflow='';
     },
     getThemes(){
       let _this=this;
       this.$http.get(this.themeApi).then(function(response){
+        console.log(JSON.parse(response.body).others);
         _this.items=JSON.parse(response.body).others;
       })
+    },
+    toThemeDtl(index){
+      this.$router.push({name:'theme',params:{id:this.items[index].id}});
+      this.hidebar();
     }
   },
   mounted(){

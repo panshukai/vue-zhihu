@@ -9,7 +9,7 @@ export default {
   },
   methods:{
     hidebar(){
-      this.$store.commit('hideBar',!this.isHideBar);
+      this.$store.commit('hideBar',true);
       document.body.style.overflow='auto';
 	  document.querySelector('html').style.overflow='auto';
     },

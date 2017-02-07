@@ -63,7 +63,6 @@ export default {
       },
       getList(){
         this.$http.get(this.themeApi+this.$route.params.id).then(function(response){
-          console.log(response);
           this.body=JSON.parse(response.body);
           this.background=JSON.parse(response.body).background;
           this.description=JSON.parse(response.body).description;

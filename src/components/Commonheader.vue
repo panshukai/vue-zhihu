@@ -1,6 +1,6 @@
 <template>
   <header class="header" v-if="!isInfo" :style="{backgroundColor:backgroundColor}">
-    <div class="header-icon"><i class="iconfont" @click="hidebar()">&#xe628;</i></div>
+    <div class="header-icon"><i class="iconfont" @click="showbar()">&#xe628;</i></div>
     <div class="header-cont"><h2>{{headDate}}</h2></div>
     <div class="header-icon" v-show='isIndex'><i class="iconfont">&#xe622;</i></div>
     <div class="header-icon" v-show='isIndex'><i class="iconfont" @click="changeColor()">&#xe7b3;</i></div>
@@ -30,10 +30,14 @@ export default {
     }
   },
   methods:{
-    hidebar(){
-        this.$store.commit('hideBar',!this.isHideBar);
+    showbar(){
+        this.$store.commit('hideBar',false);
         document.body.style.overflow='hidden';
+        document.body.style.width='100%';
+        document.body.style.height='100%';
         document.querySelector('html').style.overflow='hidden';
+        document.querySelector('html').style.width='100%';
+        document.querySelector('html').style.height='100%';        
     },
     changeColor(){
         if(this.backgroundColor=='#00A2EA'){
