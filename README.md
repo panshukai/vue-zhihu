@@ -1,5 +1,6 @@
 # my-vue2 zhihuDaily
 
+*线上地址：[http://bxu2359340403.my3w.com/](http://bxu2359340403.my3w.com/)
 * a vue2版知乎日报
 * 所有API均来自网络（若涉及侵权，请及时联系我删除) 
 * 感谢izzyleung提供的[API](https://github.com/izzyleung/ZhihuDailyPurify/wiki/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-API-%E5%88%86%E6%9E%90)
@@ -19,6 +20,7 @@
 ###解决问题
 * 解决知乎api接口只能用get模式（使用代理，具体详见config/index.js）
 * 知乎图片防盗链问题（使用https://images.weserv.nl 图片代理和缓存）
+* 线上使用php的file_get_contents进行中转，接口地址与本地不同。例如：themeApi:'/jiekou/themes'（本地）themeApi:'/phpinfo.php?a=themes'（线上）(也可使用nginx反向代理，我用的是共享虚机，貌似改不了nginx配置)
 
 ## Build Setup
 
