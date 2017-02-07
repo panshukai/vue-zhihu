@@ -50,9 +50,11 @@
 	export default {
 		data(){
 			return {
-				commentApi:'/jiekou/story-extra/',
+				// commentApi:'/jiekou/story-extra/',
+				commentApi:'/phpinfo.php?a=story-extra/',
 				comments:null,
-				longCommentApi:'jiekou/story/',
+				// longCommentApi:'jiekou/story/',
+				longCommentApi:'/phpinfo.php?a=story/',
 				longs:null,
 				shorts:null,
 				longComments:null,
@@ -103,14 +105,14 @@
 				let _this=this;
 				this.$http.get(this.commentApi+this.$route.params.detailId).then(function(response){//获取评论的条数，包括长评短评等
 					// console.log(response);
-					_this.longs=response.body.long_comments;
-					_this.shorts=response.body.short_comments;
-					_this.comments=response.body.comments;
+					_this.longs=JSON.parse(response.body).long_comments;
+					_this.shorts=JSON.parse(response.body).short_comments;
+					_this.comments=JSON.parse(response.body).comments;
 				});
 				this.$http.get(this.longCommentApi+this.$route.params.detailId+'/long-comments').then(function(response){//获取长评论内容
 					// console.log(response);
 
-					_this.longComments=response.body.comments;
+					_this.longComments=JSON.parse(response.body).comments;
 				})
 			},
 			goBack(){
@@ -120,7 +122,7 @@
 				let _this=this;
 				this.$http.get(this.longCommentApi+this.$route.params.detailId+'/short-comments').then(function(response){
 					console.log(response);
-					_this.shortComments=response.body.comments;
+					_this.shortComments=JSON.parse(response.body).comments;
 					_this.shortShow=true;
 				})
 			},

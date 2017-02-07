@@ -56,8 +56,10 @@ export default {
       body:[],
       topList:[],
       msg: '今日热闻',
-      zhihuApi:'/jiekou/news/latest',
-      before:'/jiekou/news/before/',
+      // zhihuApi:'/jiekou/news/latest',
+      zhihuApi:'/phpinfo.php?a=news/latest',
+      // before:'/jiekou/news/before/',
+      before:'/phpinfo.php?a=news/before/',
       allLoaded: false,
       topStatus: '',
       bottomStatus: '',
@@ -86,7 +88,6 @@ methods:{
             }else if(topDistance>=200+this.titleNumArr[i]*44+this.liNumArr[i]*75){
                 // console.log(this.showDate(this.headDateArr[i]));
                 // console.log(this.titleNumArr);
-                console.log()
                 this.$store.commit('changeHeadDate', this.showDate(this.headDateArr[i+1]));
             }
         }
@@ -147,7 +148,7 @@ methods:{
     loadBottom() {//上拉加载
         setTimeout(() => {
             this.$http.get(this.before+this.date).then(function(response){
-                this.body.push(response.body);
+                this.body.push(JSON.parse(response.body));
                 // console.log(String(this.date));
                 var year=Number(String(this.date).substring(0,4));
                 var month=Number(String(this.date).substring(4,6));
@@ -157,12 +158,12 @@ methods:{
                 // var lastTimeMonth=new Date(times - 24*60*60*1000).getMonth();
                 // var lastTimeDate=new Date(times - 24*60*60*1000).getDate();
                 this.date=this.changeDate(new Date(times - 24*60*60*1000));
-                this.liNum+=response.body.stories.length;
+                this.liNum+=JSON.parse(response.body).stories.length;
                 this.liNumArr.push(this.liNum);
                 this.titleNum+=1;
                 this.titleNumArr.push(this.titleNum);
               // console.log(_this.liNum);
-                this.headDateArr.push(response.body.date);//存入每次的date数值
+                this.headDateArr.push(JSON.parse(response.body).date);//存入每次的date数值
                 console.log(this.liNumArr);
                 console.log(this.headDateArr);
             });
@@ -175,14 +176,16 @@ methods:{
     getList(){
         let _this=this;
         this.$http.get(_this.zhihuApi).then(function(response){
-            _this.body.push(response.body);
-            _this.topList=response.body.top_stories;//轮播图json
-            // _this.newsList=response.body.stories;
-            _this.date=Number(response.body.date);
+                        console.log(JSON.parse(response.body));
+            _this.body.push(JSON.parse(response.body));
+            _this.topList=JSON.parse(response.body).top_stories;//轮播图json
+            // _this.newsList=JSON.parse(response.body).stories;
+            _this.date=Number(JSON.parse(response.body).date);
             // console.log(_this.headDateArr);
-            if(_this.liNumArr[0]!=response.body.stories.length){//解决下拉刷新后滚动页面标题日期与页面内容日期不对应（原因：下拉刷新和mount都执行此函数）
-                _this.headDateArr.push(response.body.date);//存入当前日期
-                _this.liNum+=response.body.stories.length;//新闻列表单个新闻和
+
+            if(_this.liNumArr[0]!=JSON.parse(response.body).stories.length){//解决下拉刷新后滚动页面标题日期与页面内容日期不对应（原因：下拉刷新和mount都执行此函数）
+                _this.headDateArr.push(JSON.parse(response.body).date);//存入当前日期
+                _this.liNum+=JSON.parse(response.body).stories.length;//新闻列表单个新闻和
                 _this.liNumArr.push(_this.liNum);//加载一次，存入当前所有的列表内容总和
                 _this.titleNum+=1;
                 _this.titleNumArr.push(_this.titleNum);

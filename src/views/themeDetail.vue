@@ -25,8 +25,10 @@
 	export default {
 		data(){
 			return {
-				zhihuApi:'/jiekou/news/',
-				commentApi:'/jiekou/story-extra/',
+				// zhihuApi:'/jiekou/news/',
+				zhihuApi:'/phpinfo.php?a=news/',
+				// commentApi:'/jiekou/story-extra/',
+				commentApi:'/phpinfo.php?a=story-extra/',
 				expDetailPage:'',
 				detailHtml:null,
 				cssLink:null,
@@ -89,16 +91,16 @@
 		    },
 			getContext(){
 				this.$http.get(this.zhihuApi+this.$route.params.detailId).then(function(response){
-					this.detailHtml=response.body.body;
-					this.cssLink=response.body.css;
-					this.recommenders=response.body.recommenders;
+					this.detailHtml=JSON.parse(response.body).body;
+					this.cssLink=JSON.parse(response.body).css;
+					this.recommenders=JSON.parse(response.body).recommenders;
 					Indicator.close();
 				})
 			},
 			getExtra(){
 				this.$http.get(this.commentApi+this.$route.params.detailId).then(function(response){
-					this.popularity=response.body.popularity;
-					this.comments=response.body.comments;
+					this.popularity=JSON.parse(response.body).popularity;
+					this.comments=JSON.parse(response.body).comments;
 				})
 			},
 			goComment(){

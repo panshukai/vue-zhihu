@@ -39,7 +39,8 @@ export default {
       description:null,
       editors:null,
       contentList:[],
-      themeApi:'/jiekou/theme/',
+      // themeApi:'/jiekou/theme/',
+      themeApi:'/phpinfo.php?a=theme/',
     }
   },
   watch:{
@@ -62,11 +63,12 @@ export default {
       },
       getList(){
         this.$http.get(this.themeApi+this.$route.params.id).then(function(response){
-          this.body=response.body;
-          this.background=response.body.background;
-          this.description=response.body.description;
-          this.editors=response.body.editors;
-          this.contentList=response.body.stories;
+          console.log(response);
+          this.body=JSON.parse(response.body);
+          this.background=JSON.parse(response.body).background;
+          this.description=JSON.parse(response.body).description;
+          this.editors=JSON.parse(response.body).editors;
+          this.contentList=JSON.parse(response.body).stories;
           Indicator.close();
         },
         function(response){

@@ -32,6 +32,8 @@ export default {
   methods:{
     hidebar(){
         this.$store.commit('hideBar',!this.isHideBar);
+        document.body.style.overflow='hidden';
+        document.querySelector('html').style.overflow='hidden';
     },
     changeColor(){
         if(this.backgroundColor=='#00A2EA'){

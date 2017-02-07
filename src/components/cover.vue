@@ -10,6 +10,8 @@ export default {
   methods:{
     hidebar(){
       this.$store.commit('hideBar',!this.isHideBar);
+      document.body.style.overflow='auto';
+	  document.querySelector('html').style.overflow='auto';
     },
   }
 }

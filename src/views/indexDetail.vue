@@ -17,8 +17,10 @@
 	export default {
 		data(){
 			return {
-				zhihuApi:'/jiekou/news/',
-				commentApi:'/jiekou/story-extra/',
+				// zhihuApi:'/jiekou/news/',
+				zhihuApi:'/phpinfo.php?a=news/',
+				// commentApi:'/jiekou/story-extra/',
+				commentApi:'/phpinfo.php?a=story-extra/',
 				expDetailPage:'',
 				detailHtml:null,
 				cssLink:null,
@@ -76,16 +78,16 @@
 		methods:{
 			getContext(){
 				this.$http.get(this.zhihuApi+this.$route.params.detailId).then(function(response){
-					var headImg=response.body.image.replace(/http\w{0,1}:\/\/p/g, 'https://images.weserv.nl/?url=p');
-					var headImgSource=response.body.image_source;					
-					var html=response.body.body;
+					var headImg=JSON.parse(response.body).image.replace(/http\w{0,1}:\/\/p/g, 'https://images.weserv.nl/?url=p');
+					var headImgSource=JSON.parse(response.body).image_source;					
+					var html=JSON.parse(response.body).body;
 					var aa=html.split('"img-place-holder">');
-					var str='<img src="'+headImg+'">'+'<div class="cover"></div>'+'<h3>'+response.body.title+'</h3>'+'<span>'+response.body.image_source+'</span>';
+					var str='<img src="'+headImg+'">'+'<div class="cover"></div>'+'<h3>'+JSON.parse(response.body).title+'</h3>'+'<span>'+JSON.parse(response.body).image_source+'</span>';
 					var aa2=str+aa[1];
 					var newStr=aa[0]+'"img-place-holder">'+aa2;
 					// console.log(newStr);
 					this.detailHtml=newStr;
-					this.cssLink=response.body.css;
+					this.cssLink=JSON.parse(response.body).css;
 					// console.log(response);
 					Indicator.close();
 				})
@@ -94,8 +96,8 @@
 				/*this.$http.get(this.commentApi+this.$route.params.id).then(function(response){*/
 				this.$http.get(this.commentApi+this.$route.params.detailId).then(function(response){
 					console.log(response);
-					this.popularity=response.body.popularity;
-					this.comments=response.body.comments;
+					this.popularity=JSON.parse(response.body).popularity;
+					this.comments=JSON.parse(response.body).comments;
 				})
 			},
 			goComment(){
