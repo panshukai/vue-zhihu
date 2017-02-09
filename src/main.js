@@ -7,6 +7,7 @@ import router from './router'
 import VueResource from 'vue-resource'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
+import 'lib-flexible'
 // import filters from './imgFDL/antiSteal.js'
 // Object.keys(filters).forEach((k) => Vue.filter(k, filters[k]))
 // Vue.filter("replaceUrl",function(srcUrl){

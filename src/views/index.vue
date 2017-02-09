@@ -176,7 +176,7 @@ methods:{
     getList(){
         let _this=this;
         this.$http.get(_this.zhihuApi).then(function(response){
-                        console.log(JSON.parse(response.body));
+            console.log(JSON.parse(response.body));
             _this.body.push(JSON.parse(response.body));
             _this.topList=JSON.parse(response.body).top_stories;//轮播图json
             // _this.newsList=JSON.parse(response.body).stories;
@@ -210,25 +210,25 @@ methods:{
   transform: rotate(180deg);
 }
 .my-swipe {
-  height: 200px;
+  height: 6.25rem;
   color: #fff;
-  font-size: 0.2rem;
+  font-size: 20px;
   font-weight: bold;
   text-align: center;
 }
 .mint-swipe-indicator{background-color: #666;}
 .mint-swipe-indicator.is-active{background-color: #fff;}
 .wrap{position: relative;width: 100%;height: 100%;}
-.wrap p{position: absolute;top: 65%;left: 0;padding: 0 0.2rem;}
-dt{padding: 8px 0 8px 15px;font-size: 0.18rem;line-height: 0.28rem;font-weight: bold;color: #888;}
+.wrap p{position: absolute;top: 65%;left: 0;padding: 0 0.625rem;}
+dt{padding: 0.25rem 0 0.25rem 0.5rem;font-size: 18px;font-weight: bold;color: #888;}
 ul{width: 100%;}
-li{border: 1px solid #ccc;margin: 0 5px 5px;box-shadow: 0px 2px 2px #ddd;border-radius: 4px;padding: 5px;}
+li{border: 1px solid #ccc;margin: 0 0.15625rem 5px;box-shadow: 0px 2px 2px #ddd;border-radius: 4px;padding: 0.15625rem;}
 .listDiv{display: flex;flex-direction: row;}
 .leftInfo{flex: 4;text-align: left;color: #000;padding-right: 0.1rem;}
-.leftInfo p{padding: 0.1rem 0;}
+.leftInfo p{padding: 0.3125rem 0;font-size: 14px;}
 .leftInfo button{border: 1px solid #ccc;background-color: #fff;color: #999;padding: 2px;border-radius: 2px;}
 .img{flex: 1;text-align: left;position: relative;}
 .img img{display: block;width: 100%;}
-.img .cover{position: absolute;left: 0;bottom: 0;width: 100%;background-color: #000;opacity: .4;height: 16px;}
-.img p{position: absolute;right: 4px;bottom: 1px;color: #fff;font-size: 12px;text-align: right;width: auto;line-height: 14px;}
+.img .cover{position: absolute;left: 0;bottom: 0;width: 100%;background-color: #000;opacity: .4;height: 0.5rem;}
+.img p{position: absolute;right: 0.125rem;bottom: 1px;color: #fff;font-size: 12px;text-align: right;width: auto;}
 </style>

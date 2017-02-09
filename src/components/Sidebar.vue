@@ -55,18 +55,18 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.sidebar{width: 250px;height:100%;position: fixed;left: -250px;top: 0;z-index: 5;transition: all 0.3s ease;overflow: auto;}
-.sidebar.showSideBar{left:0px;}
-.portrait{padding: 10px;vertical-align: center;color: #fff;font-size: 18px;height: 0.3rem;}
+.sidebar{width: 7.8125rem;height:100%;position: fixed;left: -7.8125rem;top: 0;z-index: 5;transition: all 0.3s ease;overflow: auto;}
+.sidebar.showSideBar{left:0rem;}
+.portrait{padding: 0.3125rem;vertical-align: center;color: #fff;font-size: 18px;height: 1rem;}
 img{border-radius: 50%;}
-h1{color: #fff;line-height: 0.5rem;font-size: 20px;}
+h1{color: #fff;line-height: 1.5625rem;font-size: 20px;}
 .iconfont{color: #00A2EA;font-size: 16px;}
-h4{padding: 10px;background-color: #fff;font-size: 16px;line-height: 20px;font-weight: bold;}
+h4{padding: 0.3125rem;background-color: #fff;font-size: 16px;line-height: 20px;font-weight: bold;}
 h4.router-link-active{background-color: #ddd;}
 .sidebar ul{padding-left: 0;overflow-y: auto;}
-li{line-height: 26px;}
+li{line-height: 26px;font-size: 16px;}
 
-.themeLi{padding: 10px;color: #000;display: flex;background-color: #fff;}
+.themeLi{padding: 0.3125rem;color: #000;display: flex;background-color: #fff;}
 .themeLi a{flex: 6;color: #000;}
 .themeLi span{flex: 1;color: #999;font-size: 18px;}
 li.router-link-active{background-color: #ddd;}

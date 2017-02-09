@@ -153,7 +153,7 @@ export default {
     top: 0;
     left: 0;
     z-index: 4;
-    height: 0.5rem;
+    height: 1.5625rem;
     width: 100%;
 /*    background: #00A2EA;*/
     display: flex;
@@ -165,16 +165,16 @@ export default {
     cursor: pointer;
   }
   .header-icon i{
-    font-size: 0.2rem;
-      line-height: 0.5rem;
+    font-size: 20px;
+      line-height: 1.5625rem;
     }
   .header-cont {
     flex: 6;
-    padding-left: 10px;
+    padding-left: 0.3125rem;
   }
   .header-cont h2{
     text-align: left;
-    line-height: 0.5rem;
+    line-height: 1.5625rem;
     color: #ffffff;
     font-size:16px;
   }

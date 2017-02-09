@@ -133,23 +133,23 @@
 	}
 </script>
 <style scoped>
-.commentHeader{position: fixed;top: 0;left: 0;z-index: 4;height: 0.5rem;width: 100%;display: flex;flex-direction: row;}
-.comment{flex: 4;text-align: left;color: #fff;font-size: 0.2rem;line-height: 0.5rem;}
+.commentHeader{position: fixed;top: 0;left: 0;z-index: 4;height: 1.5625rem;width: 100%;display: flex;flex-direction: row;}
+.comment{flex: 4;text-align: left;color: #fff;font-size: 20px;line-height: 1.5625rem;}
 .header-icon{flex:1;text-align: center;cursor: pointer;color: #fff;}
-.header-icon.goBack{flex: 1;text-align: left;padding-left: 0.1rem;}
-.header-icon i{font-size: 0.2rem;line-height: 0.5rem;}
+.header-icon.goBack{flex: 1;text-align: left;padding-left: 0.3125rem;}
+.header-icon i{font-size: 20px;line-height: 1.5625rem;}
 .mainComment{width: 100%;}
-.mainComment li{border-bottom: 1px #ccc solid;padding-bottom: 0.1rem;}
-.longCommentP{border-bottom: 1px #ccc solid;line-height: 0.54rem;padding-left: 0.1rem;}
-.singleLongComment{display: flex;align-items: center;padding: 0 0.1rem;}
+.mainComment li{border-bottom: 1px #ccc solid;padding-bottom: 0.3125rem;}
+.longCommentP{border-bottom: 1px #ccc solid;line-height: 1.6875rem;padding-left: 0.3125rem;font-size: 14px;}
+.singleLongComment{display: flex;align-items: center;padding: 0 0.25rem;}
 .singleLongComment .img{flex: 1;}
-.singleLongComment h3{flex: 8;line-height: 0.5rem;font-size: 20px;padding-left: 0.05rem;font-weight: bold;font-size: 18px;}
+.singleLongComment h3{flex: 8;line-height: 1.5625rem;padding-left: 0.15625rem;font-weight: bold;font-size: 18px;}
 .likes{flex: 1;color: #999;}
 .likes .iconfont{color: #999;}
 .img-responsive{width: 100%;border-radius: 50%;}
-.commentContent{margin-left: 10%;margin-right: 6%;overflow-x: hidden;font-size: 14px;line-height: 20px;}
-.date{padding-top: 0.08rem;color: #aaa;font-size: 12px;}
-.shortComment{display: flex;border-bottom: 1px #ccc solid;line-height: 0.54rem;padding-left: 0.1rem;}
-.shortComment P{flex: 5;}
+.commentContent{margin-left: 10%;margin-right: 6%;overflow-x: hidden;font-size: 14px;line-height: 0.625rem;}
+.date{padding-top: 0.25rem;color: #aaa;font-size: 12px;}
+.shortComment{display: flex;border-bottom: 1px #ccc solid;line-height: 1.6875rem;padding-left: 0.3125rem;}
+.shortComment p{flex: 5;}
 .shortComment i{flex: 1;color: #ccc;text-align: center;}
 </style>

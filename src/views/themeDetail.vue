@@ -113,19 +113,19 @@
 	}
 </script>
 <style>
-.hotHeader{position: fixed;top: 0;left: 0;z-index: 4;height: 0.5rem;width: 100%;background: #00A2EA;display: flex;flex-direction: row;margin-right: 10px;}
-.header-icon{flex:2;text-align: center;cursor: pointer;color: #fff;margin:0 2px;}
-.header-icon.goBack{flex: 4;text-align: left;padding-left: 0.1rem;}
-.header-icon i{font-size: 0.2rem;line-height: 0.5rem;}
-.header-cont {flex: 6;padding-left: 10px;}
-.header-cont h2{text-align: center;line-height: 0.5rem;color: #ffffff;font-size:0.25rem;}
+.hotHeader{position: fixed;top: 0;left: 0;z-index: 4;height: 1.5625rem;width: 100%;background: #00A2EA;display: flex;flex-direction: row;margin-right: 0.3125rem;}
+.header-icon{flex:2;text-align: center;cursor: pointer;color: #fff;margin:0 0.0625rem;}
+.header-icon.goBack{flex: 4;text-align: left;padding-left: 0.3125rem;}
+.header-icon i{font-size: 20px;line-height: 1.5625rem;}
+.header-cont {flex: 6;padding-left: 0.3125rem;}
+.header-cont h2{text-align: center;line-height: 1.5625rem;color: #ffffff;font-size:24px;}
 /*.headline .img-place-holder{overflow: hidden;width: 100%;position: relative;}
 .headline .img-place-holder h3{position: absolute;bottom: 20px;left:0;text-align: left;font-size: 0.2rem;color: #fff;padding: 0 0.1rem;}
 .headline .img-place-holder span{position: absolute;bottom: 0;right: 0;padding: 0 0.1rem;color: #eee;font-size: 12px;line-height: 18px;}*/
-.recommenders{padding: 0.1rem 0;background: #eee;}
-.recommenders h5{font-size: 18px;float: left;padding:0 0.1rem;line-height: 0.3rem;}
+.recommenders{padding: 0.3125rem 0;background: #eee;}
+.recommenders h5{font-size: 18px;float: left;padding:0 0.3125rem;line-height: 1rem;}
 .recommenders ul{display: flex; flex-wrap: nowrap;}
-.recommenders ul li{width: 0.3rem;height: 0.3rem;float: left;;padding: 0 0.05rem;}
+.recommenders ul li{width: 1rem;height: 1rem;float: left;;padding: 0 0.15625rem;}
 .recommenders ul li img{width: 100%;border-radius: 50%;display: block; }
 .detail{}
 </style>
